@@ -1,6 +1,6 @@
 class CoursesController < ApplicationController
 
-  before_action :student_logged_in, only: [:select, :quit, :list]
+  before_action :student_logged_in, only: [:select, :quit, :list, :schedule]
   before_action :teacher_logged_in, only: [:new, :create, :edit, :destroy, :update]
   before_action :logged_in, only: :index
   
@@ -143,18 +143,62 @@ class CoursesController < ApplicationController
 
 
   #-------------------------for students----------------------
-
+  
   def list
-    @course=Course.all
-    @course=@course.where(open:true).all
-    @course=@course-current_user.courses
+    @course = Course.all
+    @course.each do |x|
+      unless x.open?
+        #如果课程处于关闭状态，则在列表中删除该课程
+        @course = @course - [x]
+      end
+    end
+    @course = @course - current_user.courses
+  end
+  
+  def filter
+    #byebug
+    $SelectedCourses = current_user.courses
+    Filter.filter(params[:exchange])            #获取筛选字符串并执行筛选操作
+    @course = Filter.filtered_courses           #返回筛选结果
+    @course.each do |x|
+      unless x.open?
+        @course = @course - [x]
+      end
+    end
+    @course = @course - current_user.courses
   end
 
   def select
     @course=Course.find_by_id(params[:id])
-    current_user.courses<<@course
-    flash={:success => "成功选择课程: #{@course.name}"}
+    course_time=CourseTime.new @course
+    @@conflict_list=course_time.DectConflictByList(current_user.courses)
+    if @@conflict_list.empty?
+      current_user.courses<<@course
+      flash={:success => "成功选择课程: #{@course.name}"}
+      redirect_to courses_path, flash: flash
+    else
+      flash={:warning => "#{@course.name}  与下列课程冲突"}
+      @@change_course=@course
+      redirect_to conflict_course_path,flash: flash
+    end        
+  end
+  
+  def conflict
+    @course=@@conflict_list
+  end
+  
+  def change
+    current_user.courses<<@@change_course
+    @@conflict_list.each do |course|
+      current_user.courses.delete(course)
+    end
+    flash={:success => "成功选择课程: #{@@change_course.name}"}
     redirect_to courses_path, flash: flash
+  end
+  
+
+  def schedule
+    @course=current_user.courses
   end
 
   def quit
@@ -163,6 +207,7 @@ class CoursesController < ApplicationController
     flash={:success => "成功退选课程: #{@course.name}"}
     redirect_to courses_path, flash: flash
   end
+  
 
 
   #-------------------------for both teachers and students----------------------
@@ -217,6 +262,7 @@ class CoursesController < ApplicationController
     temp
   end
 
+
   def get_course_code
      
     # @course.course_code= @course.course_department[0,2] + @course.course_firstlevel[3,1]+@course.teaching_object[0,1]+@course.course_type[0,1]+"#{params[:id].to_i+100}"+@course.campus[0,1]
@@ -244,4 +290,5 @@ class CoursesController < ApplicationController
     
     @course.course_code = depart_num + first_lev_num + type_num  + property_num  + sort_num  + campus_num
   end
+
 end
