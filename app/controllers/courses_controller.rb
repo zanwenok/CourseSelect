@@ -71,6 +71,7 @@ class CoursesController < ApplicationController
     @course1=Course.new
 
 
+
   end
 
   def create

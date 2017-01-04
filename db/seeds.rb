@@ -95,8 +95,7 @@ teacher_map={
     2 => {name: "刘玉贵", department: "计算机与控制学院"},
     3 => {name: "李玲", department: "文献情报中心"},
     4 => {name: "韩健平", department: "人文学院"},
-    5 => {name: "詹乃军", department: "软件研究所"},
-    6 => {name: "苏桂平", department: "计算机与控制学院"}
+
 }
 
 =begin

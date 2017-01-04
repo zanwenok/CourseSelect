@@ -32600,3 +32600,649 @@ Processing by CoursesController#index as HTML
   Rendered layouts/_content.html.erb (0.1ms)
   Rendered layouts/_footer.html.erb (0.0ms)
 Completed 200 OK in 47ms (Views: 42.2ms | ActiveRecord: 2.9ms)
+  [1m[36m (5.1ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL) [0m
+  [1m[35m (2.9ms)[0m  CREATE UNIQUE INDEX  "unique_schema_migrations" ON "schema_migrations"  ("version")
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateUsers (20160818081955)
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (6.6ms)[0m  [1mCREATE TABLE "users" ("id" serial primary key, "name" character varying, "email" character varying, "num" character varying, "major" character varying, "department" character varying, "password_digest" character varying, "remember_digest" character varying, "admin" boolean DEFAULT 'f', "teacher" boolean DEFAULT 'f', "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (1.1ms)[0m  CREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20160818081955"]]
+  [1m[35m (0.8ms)[0m  COMMIT
+Migrating to CreateCourses (20160907152104)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35m (4.4ms)[0m  CREATE TABLE "courses" ("id" serial primary key, "name" character varying, "course_code" character varying, "course_department" character varying, "course_firstlevel" character varying, "teaching_object" character varying, "course_type" character varying, "teaching_type" character varying, "exam_type" character varying, "period" integer, "credit" float, "limit_num" integer, "student_num" integer DEFAULT 0, "campus" character varying, "building" character varying, "class_room" character varying, "course_time" character varying, "start_week" integer, "end_week" integer, "description" text DEFAULT '', "open" boolean DEFAULT 't', "teacher_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) 
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20160907152104"]]
+  [1m[35m (0.7ms)[0m  COMMIT
+Migrating to CreateGrades (20160909105514)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35m (2.4ms)[0m  CREATE TABLE "grades" ("id" serial primary key, "course_id" integer, "user_id" integer, "grade" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) 
+  [1m[36m (2.3ms)[0m  [1mCREATE  INDEX  "index_grades_on_course_id" ON "grades"  ("course_id")[0m
+  [1m[35m (1.9ms)[0m  CREATE  INDEX  "index_grades_on_user_id" ON "grades"  ("user_id")
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20160909105514"]]
+  [1m[35m (0.8ms)[0m  COMMIT
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (2.7ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'courses'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (3.2ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'grades'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (1.9ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'users'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mUser Exists (1.8ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('admin@test.com') LIMIT 1[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "users" ("name", "email", "num", "major", "department", "password_digest", "admin", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"  [["name", "彭兆卿"], ["email", "admin@test.com"], ["num", "201628008629001"], ["major", "计算机软件与理论"], ["department", "计算机与控制学院"], ["password_digest", "$2a$10$oDIVxAsXVJbAtzki8Tj4vOJAHEl7YHNgv4zBF442Oo8xkR8A5.PNG"], ["admin", "t"], ["created_at", "2017-01-04 16:44:07.408085"], ["updated_at", "2017-01-04 16:44:07.408085"]]
+  [1m[36m (7.3ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (0.4ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher1@test.com') LIMIT 1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "users" ("name", "email", "department", "password_digest", "teacher", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["name", "胡伟武"], ["email", "teacher1@test.com"], ["department", "计算技术研究所"], ["password_digest", "$2a$10$oH.j/Vir6wY9Fen.dANJ9O872pnkwH5VGo1ZcabjC2PcSqEYH4yJe"], ["teacher", "t"], ["created_at", "2017-01-04 16:44:07.495858"], ["updated_at", "2017-01-04 16:44:07.495858"]]
+  [1m[36m (1.9ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "courses" ("course_code", "name", "course_department", "course_firstlevel", "teaching_object", "course_type", "credit", "period", "limit_num", "start_week", "end_week", "course_time", "campus", "building", "class_room", "teaching_type", "exam_type", "teacher_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING "id"[0m  [["course_code", "091M4001H"], ["name", "计算机体系结构"], ["course_department", "计算机与控制学院"], ["course_firstlevel", "计算机科学与技术"], ["teaching_object", "硕士生"], ["course_type", "一级学科核心课"], ["credit", 3.0], ["period", 60], ["limit_num", 0], ["start_week", 2], ["end_week", 20], ["course_time", "10911"], ["campus", "雁栖湖"], ["building", "教1"], ["class_room", "107"], ["teaching_type", "课堂讲授为主"], ["exam_type", "闭卷笔试"], ["teacher_id", 2], ["created_at", "2017-01-04 16:44:07.544253"], ["updated_at", "2017-01-04 16:44:07.544253"]]
+  [1m[35m (0.6ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher2@test.com') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("name", "email", "department", "password_digest", "teacher", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["name", "刘玉贵"], ["email", "teacher2@test.com"], ["department", "计算机与控制学院"], ["password_digest", "$2a$10$JbN.IDeQsbpuTuLvIffDEOmtuqSg.DiCWsD2SqPQgoo9eg21T2.x6"], ["teacher", "t"], ["created_at", "2017-01-04 16:44:07.623494"], ["updated_at", "2017-01-04 16:44:07.623494"]]
+  [1m[35m (0.7ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "courses" ("course_code", "name", "course_department", "course_firstlevel", "teaching_object", "course_type", "credit", "period", "limit_num", "start_week", "end_week", "course_time", "campus", "building", "class_room", "teaching_type", "exam_type", "teacher_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING "id"  [["course_code", "093M1002H-2"], ["name", "计算机算法设计与分析"], ["course_department", "计算机与控制学院"], ["course_firstlevel", "计算机科学与技术"], ["teaching_object", "硕士生"], ["course_type", "一级学科核心课"], ["credit", 3.0], ["period", 60], ["limit_num", 0], ["start_week", 2], ["end_week", 17], ["course_time", "10102 30102"], ["campus", "雁栖湖"], ["building", "教1"], ["class_room", "108"], ["teaching_type", "课堂讲授为主"], ["exam_type", "闭卷笔试"], ["teacher_id", 3], ["created_at", "2017-01-04 16:44:07.628086"], ["updated_at", "2017-01-04 16:44:07.628086"]]
+  [1m[36m (0.6ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher3@test.com') LIMIT 1[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "users" ("name", "email", "department", "password_digest", "teacher", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["name", "李玲"], ["email", "teacher3@test.com"], ["department", "文献情报中心"], ["password_digest", "$2a$10$PbO16wUrIJK0MNQKsN2MpuKFcqILqXNfulnFKuNh9pOCDeElFJzLK"], ["teacher", "t"], ["created_at", "2017-01-04 16:44:07.705369"], ["updated_at", "2017-01-04 16:44:07.705369"]]
+  [1m[36m (0.7ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "courses" ("course_code", "name", "course_department", "course_firstlevel", "teaching_object", "course_type", "credit", "period", "limit_num", "start_week", "end_week", "course_time", "campus", "building", "class_room", "teaching_type", "exam_type", "teacher_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING "id"[0m  [["course_code", "09MGB001H"], ["name", "计算机领域信息检索与利用实用技巧"], ["course_department", "计算机与控制学院"], ["course_firstlevel", "计算机科学与技术"], ["teaching_object", "硕士生"], ["course_type", "一级学科核心课"], ["credit", 1.0], ["period", 27], ["limit_num", 0], ["start_week", 2], ["end_week", 13], ["course_time", "20507"], ["campus", "雁栖湖"], ["building", "图书馆"], ["class_room", "145"], ["teaching_type", "课堂讲授为主"], ["exam_type", "大开卷"], ["teacher_id", 4], ["created_at", "2017-01-04 16:44:07.710793"], ["updated_at", "2017-01-04 16:44:07.710793"]]
+  [1m[35m (0.7ms)[0m  COMMIT
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher4@test.com') LIMIT 1
+  [1m[36mSQL (1.5ms)[0m  [1mINSERT INTO "users" ("name", "email", "department", "password_digest", "teacher", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["name", "韩健平"], ["email", "teacher4@test.com"], ["department", "人文学院"], ["password_digest", "$2a$10$6f1DEBsUC7po/mXA3oghQOdD2YM3SfBcgFFR6OYbGxYqLqETbwNou"], ["teacher", "t"], ["created_at", "2017-01-04 16:44:07.787525"], ["updated_at", "2017-01-04 16:44:07.787525"]]
+  [1m[35m (0.8ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "courses" ("course_code", "name", "course_department", "course_firstlevel", "teaching_object", "course_type", "credit", "period", "limit_num", "start_week", "end_week", "course_time", "campus", "building", "class_room", "teaching_type", "exam_type", "teacher_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING "id"  [["course_code", "14MGX063H"], ["name", "中国古代史讲座"], ["course_department", "计算机与控制学院"], ["course_firstlevel", "计算机科学与技术"], ["teaching_object", "硕士生"], ["course_type", "公共选修课"], ["credit", 1.0], ["period", 40], ["limit_num", 40], ["start_week", 3], ["end_week", 15], ["course_time", "40507"], ["campus", "雁栖湖"], ["building", "学园1"], ["class_room", "108"], ["teaching_type", "课堂讲授为主"], ["exam_type", "期末读书报告"], ["teacher_id", 5], ["created_at", "2017-01-04 16:44:07.794326"], ["updated_at", "2017-01-04 16:44:07.794326"]]
+  [1m[36m (0.8ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36mUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher5@test.com') LIMIT 1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "users" ("name", "email", "department", "password_digest", "teacher", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["name", "詹乃军"], ["email", "teacher5@test.com"], ["department", "软件研究所"], ["password_digest", "$2a$10$juF.OWeS9HSndT4GS3u8Y.nFae/m/r3/2/POPO4bBmIHzJTbpOYvS"], ["teacher", "t"], ["created_at", "2017-01-04 16:44:07.874820"], ["updated_at", "2017-01-04 16:44:07.874820"]]
+  [1m[36m (0.9ms)[0m  [1mCOMMIT[0m
+
+
+Started DELETE "/sessions/logout" for 127.0.0.1 at 2017-01-05 00:45:09 +0800
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by SessionsController#destroy as HTML
+  Parameters: {"authenticity_token"=>"Ex+JGYOTztpDm/9ojkc6KXoh2A0kSQHhfQBnqnFfWo5858imNThjSsqzQrgeZ3Up+JkkrRY7l8HQClHVYd0yqQ=="}
+  [1m[35mUser Load (0.6ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 2]]
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.2ms)[0m  COMMIT
+Redirected to http://0.0.0.0:3000/
+Completed 302 Found in 48ms (ActiveRecord: 4.8ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-01-05 00:45:09 +0800
+Processing by HomesController#index as HTML
+  Rendered homes/index.html.erb within layouts/application (415.8ms)
+  Rendered layouts/_header.html.erb (5.3ms)
+  Rendered layouts/_content.html.erb (0.4ms)
+  Rendered layouts/_footer.html.erb (0.2ms)
+Completed 200 OK in 481ms (Views: 480.9ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/users/new" for 127.0.0.1 at 2017-01-05 00:45:10 +0800
+Processing by UsersController#new as HTML
+  Rendered shared/_error_messages.html.erb (1.6ms)
+  Rendered users/_form.html.erb (320.8ms)
+  Rendered users/new.html.erb within layouts/application (321.7ms)
+  Rendered layouts/_header.html.erb (0.4ms)
+  Rendered layouts/_content.html.erb (0.1ms)
+  Rendered layouts/_footer.html.erb (0.0ms)
+Completed 200 OK in 350ms (Views: 349.6ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/sessions/login" for 127.0.0.1 at 2017-01-05 00:45:10 +0800
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (3.4ms)
+  Rendered layouts/_header.html.erb (0.4ms)
+  Rendered layouts/_content.html.erb (0.1ms)
+  Rendered layouts/_footer.html.erb (0.0ms)
+Completed 200 OK in 38ms (Views: 37.4ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/sessions/login" for 127.0.0.1 at 2017-01-05 00:45:12 +0800
+Processing by SessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"kJ25T67zT9p6IPlTxSD5AZ8bkUAn2TEtVL94p1d2cDH/ZfjwGFjiSvMIRINVALYBHaNt4BWrpw35tU7YR/QYFg==", "session"=>{"email"=>"admin@test.com", "password"=>"[FILTERED]", "remember_me"=>"0"}, "button"=>""}
+  [1m[36mUser Load (0.5ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."email" = $1 LIMIT 1[0m  [["email", "admin@test.com"]]
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36m (1.9ms)[0m  [1mCOMMIT[0m
+Redirected to http://0.0.0.0:3000/
+Completed 302 Found in 97ms (ActiveRecord: 2.9ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-01-05 00:45:13 +0800
+Processing by HomesController#index as HTML
+  Rendered homes/index.html.erb within layouts/application (1.2ms)
+  [1m[35mUser Load (0.3ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 1]]
+  Rendered layouts/_header.html.erb (1.8ms)
+  Rendered layouts/_content.html.erb (0.1ms)
+  Rendered layouts/_footer.html.erb (0.0ms)
+Completed 200 OK in 27ms (Views: 25.9ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/admin" for 127.0.0.1 at 2017-01-05 00:45:14 +0800
+Processing by RailsAdmin::MainController#dashboard as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35m (0.6ms)[0m  SELECT COUNT(*) FROM "courses"
+  [1m[36mCourse Load (1.0ms)[0m  [1mSELECT  "courses".* FROM "courses"  ORDER BY courses.updated_at desc LIMIT 1[0m
+  [1m[35m (0.5ms)[0m  SELECT COUNT(*) FROM "grades"
+  [1m[36mGrade Load (0.4ms)[0m  [1mSELECT  "grades".* FROM "grades"  ORDER BY grades.updated_at desc LIMIT 1[0m
+  [1m[35m (0.5ms)[0m  SELECT COUNT(*) FROM "users"
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY users.updated_at desc LIMIT 1[0m
+  Rendered /home/zw/.rvm/gems/ruby-2.3.0/gems/rails_admin-0.8.1/app/views/rails_admin/main/dashboard.html.haml within layouts/rails_admin/application (16.0ms)
+  Rendered /home/zw/.rvm/gems/ruby-2.3.0/gems/rails_admin-0.8.1/app/views/layouts/rails_admin/_secondary_navigation.html.haml (12.9ms)
+  Rendered /home/zw/.rvm/gems/ruby-2.3.0/gems/rails_admin-0.8.1/app/views/layouts/rails_admin/_navigation.html.haml (22.1ms)
+  Rendered /home/zw/.rvm/gems/ruby-2.3.0/gems/rails_admin-0.8.1/app/views/layouts/rails_admin/_sidebar_navigation.html.haml (3.5ms)
+  Rendered /home/zw/.rvm/gems/ruby-2.3.0/gems/rails_admin-0.8.1/app/views/layouts/rails_admin/pjax.html.haml (22.1ms)
+Completed 200 OK in 374ms (Views: 235.2ms | ActiveRecord: 6.8ms)
+
+
+Started GET "/admin/user?_pjax=%5Bdata-pjax-container%5D" for 127.0.0.1 at 2017-01-05 00:45:18 +0800
+Processing by RailsAdmin::MainController#index as HTML
+  Parameters: {"_pjax"=>"[data-pjax-container]", "model_name"=>"user"}
+  [1m[35mUser Load (2.9ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mUser Load (0.7ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY users.id desc LIMIT 20 OFFSET 0[0m
+  [1m[35m (0.6ms)[0m  SELECT COUNT(*) FROM "users"
+  Rendered /home/zw/.rvm/gems/ruby-2.3.0/gems/rails_admin-0.8.1/app/views/rails_admin/main/index.html.haml within layouts/rails_admin/pjax (103.9ms)
+Completed 200 OK in 124ms (Views: 110.8ms | ActiveRecord: 4.2ms)
+
+
+Started DELETE "/sessions/logout" for 127.0.0.1 at 2017-01-05 00:45:35 +0800
+Processing by SessionsController#destroy as HTML
+  Parameters: {"authenticity_token"=>"Yc8lI+o3QCc8sV4t/RT28ISQpxfjyaDBKvBhSGo5om8ON2ScXJztt7WZ4/1tNLnwBihbt9G7NuGH+lc3ervKSA=="}
+  [1m[36mUser Load (0.5ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.2ms)[0m  [1mCOMMIT[0m
+Redirected to http://0.0.0.0:3000/
+Completed 302 Found in 4ms (ActiveRecord: 1.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-01-05 00:45:35 +0800
+Processing by HomesController#index as HTML
+  Rendered homes/index.html.erb within layouts/application (2.3ms)
+  Rendered layouts/_header.html.erb (0.5ms)
+  Rendered layouts/_content.html.erb (0.2ms)
+  Rendered layouts/_footer.html.erb (0.1ms)
+Completed 200 OK in 34ms (Views: 33.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/sessions/login" for 127.0.0.1 at 2017-01-05 00:45:35 +0800
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (1.3ms)
+  Rendered layouts/_header.html.erb (0.5ms)
+  Rendered layouts/_content.html.erb (0.1ms)
+  Rendered layouts/_footer.html.erb (0.0ms)
+Completed 200 OK in 51ms (Views: 50.4ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/sessions/login" for 127.0.0.1 at 2017-01-05 00:45:37 +0800
+Processing by SessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"O5dEJtv9Euqs3PmjZuWlTnBKXjKwEMabneWIVSjD0A5UbwWZbVa/eiX0RHP2xepO8vKikoJiULsw774qOEG4KQ==", "session"=>{"email"=>"student1@test.com", "password"=>"[FILTERED]", "remember_me"=>"0"}, "button"=>""}
+  [1m[35mUser Load (0.3ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."email" = $1 LIMIT 1  [["email", "student1@test.com"]]
+Redirected to http://0.0.0.0:3000/
+Completed 302 Found in 2ms (ActiveRecord: 0.3ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-01-05 00:45:37 +0800
+Processing by HomesController#index as HTML
+  Rendered homes/index.html.erb within layouts/application (2.2ms)
+  Rendered layouts/_header.html.erb (0.5ms)
+  Rendered layouts/_content.html.erb (0.3ms)
+  Rendered layouts/_footer.html.erb (0.0ms)
+Completed 200 OK in 58ms (Views: 57.2ms | ActiveRecord: 0.0ms)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('admin@test.com') LIMIT 1[0m
+  [1m[35m (2.5ms)[0m  ROLLBACK
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher1@test.com') LIMIT 1
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.9ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('admin@test.com') LIMIT 1[0m
+  [1m[35m (0.3ms)[0m  ROLLBACK
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.5ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher1@test.com') LIMIT 1
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mUser Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('admin@test.com') LIMIT 1[0m
+  [1m[35m (0.3ms)[0m  ROLLBACK
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher1@test.com') LIMIT 1
+  [1m[36m (3.2ms)[0m  [1mROLLBACK[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mUser Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('admin@test.com') LIMIT 1[0m
+  [1m[35m (0.4ms)[0m  ROLLBACK
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.4ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher1@test.com') LIMIT 1
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mUser Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('admin@test.com') LIMIT 1[0m
+  [1m[35m (0.3ms)[0m  ROLLBACK
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.5ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher1@test.com') LIMIT 1
+  [1m[36m (0.6ms)[0m  [1mROLLBACK[0m
+  [1m[36m (5.2ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL) [0m
+  [1m[35m (1.8ms)[0m  CREATE UNIQUE INDEX  "unique_schema_migrations" ON "schema_migrations"  ("version")
+  [1m[36mActiveRecord::SchemaMigration Load (1.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateUsers (20160818081955)
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (4.8ms)[0m  [1mCREATE TABLE "users" ("id" serial primary key, "name" character varying, "email" character varying, "num" character varying, "major" character varying, "department" character varying, "password_digest" character varying, "remember_digest" character varying, "admin" boolean DEFAULT 'f', "teacher" boolean DEFAULT 'f', "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (1.6ms)[0m  CREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20160818081955"]]
+  [1m[35m (0.8ms)[0m  COMMIT
+Migrating to CreateCourses (20160907152104)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35m (4.3ms)[0m  CREATE TABLE "courses" ("id" serial primary key, "name" character varying, "course_code" character varying, "course_department" character varying, "course_firstlevel" character varying, "teaching_object" character varying, "course_type" character varying, "teaching_type" character varying, "exam_type" character varying, "period" integer, "credit" float, "limit_num" integer, "student_num" integer DEFAULT 0, "campus" character varying, "building" character varying, "class_room" character varying, "course_time" character varying, "start_week" integer, "end_week" integer, "description" text DEFAULT '', "open" boolean DEFAULT 't', "teacher_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) 
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20160907152104"]]
+  [1m[35m (0.9ms)[0m  COMMIT
+Migrating to CreateGrades (20160909105514)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35m (3.4ms)[0m  CREATE TABLE "grades" ("id" serial primary key, "course_id" integer, "user_id" integer, "grade" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) 
+  [1m[36m (1.9ms)[0m  [1mCREATE  INDEX  "index_grades_on_course_id" ON "grades"  ("course_id")[0m
+  [1m[35m (1.6ms)[0m  CREATE  INDEX  "index_grades_on_user_id" ON "grades"  ("user_id")
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20160909105514"]]
+  [1m[35m (0.6ms)[0m  COMMIT
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (2.0ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'courses'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (1.8ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'grades'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (2.5ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'users'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mUser Exists (0.9ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('admin@test.com') LIMIT 1[0m
+  [1m[35mSQL (1.8ms)[0m  INSERT INTO "users" ("name", "email", "num", "major", "department", "password_digest", "admin", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"  [["name", "彭兆卿"], ["email", "admin@test.com"], ["num", "201628008629001"], ["major", "计算机软件与理论"], ["department", "计算机与控制学院"], ["password_digest", "$2a$10$pILUKVMsuR4zEF3p8hJFEO20BSF1tlLESWm4xwyZjBJG/6YdYwXdO"], ["admin", "t"], ["created_at", "2017-01-04 16:56:51.602214"], ["updated_at", "2017-01-04 16:56:51.602214"]]
+  [1m[36m (7.3ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.8ms)[0m  BEGIN
+  [1m[36mUser Exists (0.4ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher1@test.com') LIMIT 1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "users" ("name", "email", "department", "password_digest", "teacher", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["name", "胡伟武"], ["email", "teacher1@test.com"], ["department", "计算技术研究所"], ["password_digest", "$2a$10$iZOCbQKrpsnxTm/8e0bhhugAJXbVGOa1d6zms6RXBkUiweD2JhBw6"], ["teacher", "t"], ["created_at", "2017-01-04 16:56:51.705865"], ["updated_at", "2017-01-04 16:56:51.705865"]]
+  [1m[36m (1.3ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (1.4ms)[0m  [1mINSERT INTO "courses" ("course_code", "name", "course_department", "course_firstlevel", "teaching_object", "course_type", "credit", "period", "limit_num", "start_week", "end_week", "course_time", "campus", "building", "class_room", "teaching_type", "exam_type", "teacher_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING "id"[0m  [["course_code", "091M4001H"], ["name", "计算机体系结构"], ["course_department", "计算机与控制学院"], ["course_firstlevel", "计算机科学与技术"], ["teaching_object", "硕士生"], ["course_type", "一级学科核心课"], ["credit", 3.0], ["period", 60], ["limit_num", 0], ["start_week", 2], ["end_week", 20], ["course_time", "10911"], ["campus", "雁栖湖"], ["building", "教1"], ["class_room", "107"], ["teaching_type", "课堂讲授为主"], ["exam_type", "闭卷笔试"], ["teacher_id", 2], ["created_at", "2017-01-04 16:56:51.769696"], ["updated_at", "2017-01-04 16:56:51.769696"]]
+  [1m[35m (2.2ms)[0m  COMMIT
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher2@test.com') LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("name", "email", "department", "password_digest", "teacher", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["name", "刘玉贵"], ["email", "teacher2@test.com"], ["department", "计算机与控制学院"], ["password_digest", "$2a$10$MHvJxYLJPhv8bMpKIp/amurudHqoan6sVrgZAX07mpR3zHl3dJ316"], ["teacher", "t"], ["created_at", "2017-01-04 16:56:51.861669"], ["updated_at", "2017-01-04 16:56:51.861669"]]
+  [1m[35m (1.9ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "courses" ("course_code", "name", "course_department", "course_firstlevel", "teaching_object", "course_type", "credit", "period", "limit_num", "start_week", "end_week", "course_time", "campus", "building", "class_room", "teaching_type", "exam_type", "teacher_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING "id"  [["course_code", "093M1002H-2"], ["name", "计算机算法设计与分析"], ["course_department", "计算机与控制学院"], ["course_firstlevel", "计算机科学与技术"], ["teaching_object", "硕士生"], ["course_type", "一级学科核心课"], ["credit", 3.0], ["period", 60], ["limit_num", 0], ["start_week", 2], ["end_week", 17], ["course_time", "10102 30102"], ["campus", "雁栖湖"], ["building", "教1"], ["class_room", "108"], ["teaching_type", "课堂讲授为主"], ["exam_type", "闭卷笔试"], ["teacher_id", 3], ["created_at", "2017-01-04 16:56:51.869685"], ["updated_at", "2017-01-04 16:56:51.869685"]]
+  [1m[36m (0.6ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (0.4ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher3@test.com') LIMIT 1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "users" ("name", "email", "department", "password_digest", "teacher", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["name", "李玲"], ["email", "teacher3@test.com"], ["department", "文献情报中心"], ["password_digest", "$2a$10$puxMQCgNBRUX7rvC1iP8WeDe8eOVuQTtX4dc.nJtqZ2bopBup.vXa"], ["teacher", "t"], ["created_at", "2017-01-04 16:56:51.968028"], ["updated_at", "2017-01-04 16:56:51.968028"]]
+  [1m[36m (0.7ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "courses" ("course_code", "name", "course_department", "course_firstlevel", "teaching_object", "course_type", "credit", "period", "limit_num", "start_week", "end_week", "course_time", "campus", "building", "class_room", "teaching_type", "exam_type", "teacher_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING "id"[0m  [["course_code", "09MGB001H"], ["name", "计算机领域信息检索与利用实用技巧"], ["course_department", "计算机与控制学院"], ["course_firstlevel", "计算机科学与技术"], ["teaching_object", "硕士生"], ["course_type", "一级学科核心课"], ["credit", 1.0], ["period", 27], ["limit_num", 0], ["start_week", 2], ["end_week", 13], ["course_time", "20507"], ["campus", "雁栖湖"], ["building", "图书馆"], ["class_room", "145"], ["teaching_type", "课堂讲授为主"], ["exam_type", "大开卷"], ["teacher_id", 4], ["created_at", "2017-01-04 16:56:51.973118"], ["updated_at", "2017-01-04 16:56:51.973118"]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher4@test.com') LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("name", "email", "department", "password_digest", "teacher", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["name", "韩健平"], ["email", "teacher4@test.com"], ["department", "人文学院"], ["password_digest", "$2a$10$nNFW814AcQZ4igU5EeGvP.rIlsQVZxOhM2syf7V689UrzjE/n9YCG"], ["teacher", "t"], ["created_at", "2017-01-04 16:56:52.061676"], ["updated_at", "2017-01-04 16:56:52.061676"]]
+  [1m[35m (1.4ms)[0m  COMMIT
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "courses" ("course_code", "name", "course_department", "course_firstlevel", "teaching_object", "course_type", "credit", "period", "limit_num", "start_week", "end_week", "course_time", "campus", "building", "class_room", "teaching_type", "exam_type", "teacher_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING "id"  [["course_code", "14MGX063H"], ["name", "中国古代史讲座"], ["course_department", "计算机与控制学院"], ["course_firstlevel", "计算机科学与技术"], ["teaching_object", "硕士生"], ["course_type", "公共选修课"], ["credit", 1.0], ["period", 40], ["limit_num", 40], ["start_week", 3], ["end_week", 15], ["course_time", "40507"], ["campus", "雁栖湖"], ["building", "学园1"], ["class_room", "108"], ["teaching_type", "课堂讲授为主"], ["exam_type", "期末读书报告"], ["teacher_id", 5], ["created_at", "2017-01-04 16:56:52.067488"], ["updated_at", "2017-01-04 16:56:52.067488"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mUser Exists (0.4ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher5@test.com') LIMIT 1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "users" ("name", "email", "department", "password_digest", "teacher", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["name", "詹乃军"], ["email", "teacher5@test.com"], ["department", "软件研究所"], ["password_digest", "$2a$10$oEKEljtKlZVLdp6sHK3p0.VvdIhDPx.M8eh.vO298l0ab0zwPD56m"], ["teacher", "t"], ["created_at", "2017-01-04 16:56:52.153862"], ["updated_at", "2017-01-04 16:56:52.153862"]]
+  [1m[36m (1.1ms)[0m  [1mCOMMIT[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mUser Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('admin@test.com') LIMIT 1[0m
+  [1m[35m (0.3ms)[0m  ROLLBACK
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.4ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher1@test.com') LIMIT 1
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[36m (6.8ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL) [0m
+  [1m[35m (1.7ms)[0m  CREATE UNIQUE INDEX  "unique_schema_migrations" ON "schema_migrations"  ("version")
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateUsers (20160818081955)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (4.5ms)[0m  [1mCREATE TABLE "users" ("id" serial primary key, "name" character varying, "email" character varying, "num" character varying, "major" character varying, "department" character varying, "password_digest" character varying, "remember_digest" character varying, "admin" boolean DEFAULT 'f', "teacher" boolean DEFAULT 'f', "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (1.3ms)[0m  CREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20160818081955"]]
+  [1m[35m (1.1ms)[0m  COMMIT
+Migrating to CreateCourses (20160907152104)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35m (4.6ms)[0m  CREATE TABLE "courses" ("id" serial primary key, "name" character varying, "course_code" character varying, "course_department" character varying, "course_firstlevel" character varying, "teaching_object" character varying, "course_type" character varying, "teaching_type" character varying, "exam_type" character varying, "period" integer, "credit" float, "limit_num" integer, "student_num" integer DEFAULT 0, "campus" character varying, "building" character varying, "class_room" character varying, "course_time" character varying, "start_week" integer, "end_week" integer, "description" text DEFAULT '', "open" boolean DEFAULT 't', "teacher_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) 
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20160907152104"]]
+  [1m[35m (0.7ms)[0m  COMMIT
+Migrating to CreateGrades (20160909105514)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35m (2.9ms)[0m  CREATE TABLE "grades" ("id" serial primary key, "course_id" integer, "user_id" integer, "grade" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) 
+  [1m[36m (1.6ms)[0m  [1mCREATE  INDEX  "index_grades_on_course_id" ON "grades"  ("course_id")[0m
+  [1m[35m (1.7ms)[0m  CREATE  INDEX  "index_grades_on_user_id" ON "grades"  ("user_id")
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20160909105514"]]
+  [1m[35m (0.7ms)[0m  COMMIT
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (2.4ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'courses'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (3.0ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'grades'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (2.1ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'users'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mUser Exists (0.9ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('admin@test.com') LIMIT 1[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "users" ("name", "email", "num", "major", "department", "password_digest", "admin", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"  [["name", "彭兆卿"], ["email", "admin@test.com"], ["num", "201628008629001"], ["major", "计算机软件与理论"], ["department", "计算机与控制学院"], ["password_digest", "$2a$10$01tykYi5uiolA32e0wldM.y39H7I8fCZRfdKMKJ9D6LqeJazkCCmG"], ["admin", "t"], ["created_at", "2017-01-04 16:59:00.543533"], ["updated_at", "2017-01-04 16:59:00.543533"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (0.4ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher1@test.com') LIMIT 1[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "users" ("name", "email", "department", "password_digest", "teacher", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["name", "胡伟武"], ["email", "teacher1@test.com"], ["department", "计算技术研究所"], ["password_digest", "$2a$10$iih8D3fHBx3EUasPLD5Hj.O8ejgjlosw1q2peAu7e.1JYuoykbKvu"], ["teacher", "t"], ["created_at", "2017-01-04 16:59:00.629679"], ["updated_at", "2017-01-04 16:59:00.629679"]]
+  [1m[36m (1.0ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.6ms)[0m  [1mROLLBACK[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('admin@test.com') LIMIT 1[0m
+  [1m[35m (0.3ms)[0m  ROLLBACK
+  [1m[36m (0.6ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.4ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher1@test.com') LIMIT 1
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[36m (4.1ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL) [0m
+  [1m[35m (1.8ms)[0m  CREATE UNIQUE INDEX  "unique_schema_migrations" ON "schema_migrations"  ("version")
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateUsers (20160818081955)
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (4.8ms)[0m  [1mCREATE TABLE "users" ("id" serial primary key, "name" character varying, "email" character varying, "num" character varying, "major" character varying, "department" character varying, "password_digest" character varying, "remember_digest" character varying, "admin" boolean DEFAULT 'f', "teacher" boolean DEFAULT 'f', "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (1.5ms)[0m  CREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20160818081955"]]
+  [1m[35m (0.6ms)[0m  COMMIT
+Migrating to CreateCourses (20160907152104)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35m (5.2ms)[0m  CREATE TABLE "courses" ("id" serial primary key, "name" character varying, "course_code" character varying, "course_department" character varying, "course_firstlevel" character varying, "teaching_object" character varying, "course_type" character varying, "teaching_type" character varying, "exam_type" character varying, "period" integer, "credit" float, "limit_num" integer, "student_num" integer DEFAULT 0, "campus" character varying, "building" character varying, "class_room" character varying, "course_time" character varying, "start_week" integer, "end_week" integer, "description" text DEFAULT '', "open" boolean DEFAULT 't', "teacher_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) 
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20160907152104"]]
+  [1m[35m (0.7ms)[0m  COMMIT
+Migrating to CreateGrades (20160909105514)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35m (3.3ms)[0m  CREATE TABLE "grades" ("id" serial primary key, "course_id" integer, "user_id" integer, "grade" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) 
+  [1m[36m (1.5ms)[0m  [1mCREATE  INDEX  "index_grades_on_course_id" ON "grades"  ("course_id")[0m
+  [1m[35m (1.6ms)[0m  CREATE  INDEX  "index_grades_on_user_id" ON "grades"  ("user_id")
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20160909105514"]]
+  [1m[35m (0.6ms)[0m  COMMIT
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (2.4ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'courses'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (1.8ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'grades'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (2.0ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'users'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('admin@test.com') LIMIT 1[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "users" ("name", "email", "num", "major", "department", "password_digest", "admin", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"  [["name", "彭兆卿"], ["email", "admin@test.com"], ["num", "201628008629001"], ["major", "计算机软件与理论"], ["department", "计算机与控制学院"], ["password_digest", "$2a$10$rQPERm9CRJxMr5DdEyg8teYSLQePQUlrUtmv.EWAvcrX/29DoCRyW"], ["admin", "t"], ["created_at", "2017-01-04 17:01:22.734257"], ["updated_at", "2017-01-04 17:01:22.734257"]]
+  [1m[36m (0.6ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.9ms)[0m  BEGIN
+  [1m[36mUser Exists (2.8ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher1@test.com') LIMIT 1[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "users" ("name", "email", "department", "password_digest", "teacher", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["name", "胡伟武"], ["email", "teacher1@test.com"], ["department", "计算技术研究所"], ["password_digest", "$2a$10$efxIrAqh6QGKURTh5SxzJ.Bw7nG05ExROjVIotYmjfvrIDxlNAhQW"], ["teacher", "t"], ["created_at", "2017-01-04 17:01:22.821260"], ["updated_at", "2017-01-04 17:01:22.821260"]]
+  [1m[36m (1.0ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "courses" ("course_code", "name", "course_department", "course_firstlevel", "teaching_object", "course_type", "credit", "period", "limit_num", "start_week", "end_week", "course_time", "campus", "building", "class_room", "teaching_type", "exam_type", "teacher_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING "id"[0m  [["course_code", "1"], ["name", "计算机体系结构"], ["course_department", "计算机与控制学院"], ["course_firstlevel", "计算机科学与技术"], ["teaching_object", "硕士生"], ["course_type", "一级学科核心课"], ["credit", 3.0], ["period", 60], ["limit_num", 0], ["start_week", 2], ["end_week", 20], ["course_time", "10911"], ["campus", "雁栖湖"], ["building", "教1"], ["class_room", "107"], ["teaching_type", "课堂讲授为主"], ["exam_type", "闭卷笔试"], ["teacher_id", 2], ["created_at", "2017-01-04 17:01:22.911254"], ["updated_at", "2017-01-04 17:01:22.911254"]]
+  [1m[35m (0.9ms)[0m  COMMIT
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher2@test.com') LIMIT 1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "users" ("name", "email", "department", "password_digest", "teacher", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["name", "刘玉贵"], ["email", "teacher2@test.com"], ["department", "计算机与控制学院"], ["password_digest", "$2a$10$J9IIu1mwDX1eQRPN8ZJvfe4hzd6f1pBGXLEoFYrgd9FeuGBSYURK."], ["teacher", "t"], ["created_at", "2017-01-04 17:01:23.003368"], ["updated_at", "2017-01-04 17:01:23.003368"]]
+  [1m[35m (1.0ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "courses" ("course_code", "name", "course_department", "course_firstlevel", "teaching_object", "course_type", "credit", "period", "limit_num", "start_week", "end_week", "course_time", "campus", "building", "class_room", "teaching_type", "exam_type", "teacher_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING "id"  [["course_code", "1"], ["name", "计算机算法设计与分析"], ["course_department", "计算机与控制学院"], ["course_firstlevel", "计算机科学与技术"], ["teaching_object", "硕士生"], ["course_type", "一级学科核心课"], ["credit", 3.0], ["period", 60], ["limit_num", 0], ["start_week", 2], ["end_week", 17], ["course_time", "10102 30102"], ["campus", "雁栖湖"], ["building", "教1"], ["class_room", "108"], ["teaching_type", "课堂讲授为主"], ["exam_type", "闭卷笔试"], ["teacher_id", 3], ["created_at", "2017-01-04 17:01:23.009671"], ["updated_at", "2017-01-04 17:01:23.009671"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (0.9ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher3@test.com') LIMIT 1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "users" ("name", "email", "department", "password_digest", "teacher", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["name", "李玲"], ["email", "teacher3@test.com"], ["department", "文献情报中心"], ["password_digest", "$2a$10$k/Z2496wRdAsrg5ZAfRPRuf55Z2Da1AdIphSFFBrqgenl2QpznB3C"], ["teacher", "t"], ["created_at", "2017-01-04 17:01:23.097211"], ["updated_at", "2017-01-04 17:01:23.097211"]]
+  [1m[36m (0.9ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "courses" ("course_code", "name", "course_department", "course_firstlevel", "teaching_object", "course_type", "credit", "period", "limit_num", "start_week", "end_week", "course_time", "campus", "building", "class_room", "teaching_type", "exam_type", "teacher_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING "id"[0m  [["course_code", "1"], ["name", "计算机领域信息检索与利用实用技巧"], ["course_department", "计算机与控制学院"], ["course_firstlevel", "计算机科学与技术"], ["teaching_object", "硕士生"], ["course_type", "一级学科核心课"], ["credit", 1.0], ["period", 27], ["limit_num", 0], ["start_week", 2], ["end_week", 13], ["course_time", "20507"], ["campus", "雁栖湖"], ["building", "图书馆"], ["class_room", "145"], ["teaching_type", "课堂讲授为主"], ["exam_type", "大开卷"], ["teacher_id", 4], ["created_at", "2017-01-04 17:01:23.102568"], ["updated_at", "2017-01-04 17:01:23.102568"]]
+  [1m[35m (0.6ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher4@test.com') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("name", "email", "department", "password_digest", "teacher", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["name", "韩健平"], ["email", "teacher4@test.com"], ["department", "人文学院"], ["password_digest", "$2a$10$f4n9HRe30HZQ9L2vJr7fP.czVAUvMuqZzKw6OSkJBMTdo9ifhCoFm"], ["teacher", "t"], ["created_at", "2017-01-04 17:01:23.187855"], ["updated_at", "2017-01-04 17:01:23.187855"]]
+  [1m[35m (0.8ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "courses" ("course_code", "name", "course_department", "course_firstlevel", "teaching_object", "course_type", "credit", "period", "limit_num", "start_week", "end_week", "course_time", "campus", "building", "class_room", "teaching_type", "exam_type", "teacher_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING "id"  [["course_code", "1"], ["name", "中国古代史讲座"], ["course_department", "计算机与控制学院"], ["course_firstlevel", "计算机科学与技术"], ["teaching_object", "硕士生"], ["course_type", "公共选修课"], ["credit", 1.0], ["period", 40], ["limit_num", 40], ["start_week", 3], ["end_week", 15], ["course_time", "40507"], ["campus", "雁栖湖"], ["building", "学园1"], ["class_room", "108"], ["teaching_type", "课堂讲授为主"], ["exam_type", "期末读书报告"], ["teacher_id", 5], ["created_at", "2017-01-04 17:01:23.193240"], ["updated_at", "2017-01-04 17:01:23.193240"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (0.4ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher5@test.com') LIMIT 1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "users" ("name", "email", "department", "password_digest", "teacher", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["name", "詹乃军"], ["email", "teacher5@test.com"], ["department", "软件研究所"], ["password_digest", "$2a$10$LF/BX92r0aiOWC/QEbpaauhYhgAsvbJ/O3Ny1xf9qJjwgnPqJy9y2"], ["teacher", "t"], ["created_at", "2017-01-04 17:01:23.280673"], ["updated_at", "2017-01-04 17:01:23.280673"]]
+  [1m[36m (0.7ms)[0m  [1mCOMMIT[0m
+  [1m[36m (4.2ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL) [0m
+  [1m[35m (1.8ms)[0m  CREATE UNIQUE INDEX  "unique_schema_migrations" ON "schema_migrations"  ("version")
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateUsers (20160818081955)
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (7.3ms)[0m  [1mCREATE TABLE "users" ("id" serial primary key, "name" character varying, "email" character varying, "num" character varying, "major" character varying, "department" character varying, "password_digest" character varying, "remember_digest" character varying, "admin" boolean DEFAULT 'f', "teacher" boolean DEFAULT 'f', "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) [0m
+  [1m[35m (1.5ms)[0m  CREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20160818081955"]]
+  [1m[35m (0.8ms)[0m  COMMIT
+Migrating to CreateCourses (20160907152104)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35m (4.4ms)[0m  CREATE TABLE "courses" ("id" serial primary key, "name" character varying, "course_code" character varying, "course_department" character varying, "course_firstlevel" character varying, "teaching_object" character varying, "course_type" character varying, "teaching_type" character varying, "exam_type" character varying, "period" integer, "credit" float, "limit_num" integer, "student_num" integer DEFAULT 0, "campus" character varying, "building" character varying, "class_room" character varying, "course_time" character varying, "start_week" integer, "end_week" integer, "description" text DEFAULT '', "open" boolean DEFAULT 't', "teacher_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) 
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20160907152104"]]
+  [1m[35m (1.4ms)[0m  COMMIT
+Migrating to CreateGrades (20160909105514)
+  [1m[36m (0.5ms)[0m  [1mBEGIN[0m
+  [1m[35m (4.0ms)[0m  CREATE TABLE "grades" ("id" serial primary key, "course_id" integer, "user_id" integer, "grade" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL) 
+  [1m[36m (1.8ms)[0m  [1mCREATE  INDEX  "index_grades_on_course_id" ON "grades"  ("course_id")[0m
+  [1m[35m (3.1ms)[0m  CREATE  INDEX  "index_grades_on_user_id" ON "grades"  ("user_id")
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ($1)[0m  [["version", "20160909105514"]]
+  [1m[35m (0.7ms)[0m  COMMIT
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (3.0ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'courses'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36m (2.4ms)[0m  [1mSELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'grades'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+[0m
+  [1m[35m (2.7ms)[0m  SELECT t2.oid::regclass::text AS to_table, a1.attname AS column, a2.attname AS primary_key, c.conname AS name, c.confupdtype AS on_update, c.confdeltype AS on_delete
+FROM pg_constraint c
+JOIN pg_class t1 ON c.conrelid = t1.oid
+JOIN pg_class t2 ON c.confrelid = t2.oid
+JOIN pg_attribute a1 ON a1.attnum = c.conkey[1] AND a1.attrelid = t1.oid
+JOIN pg_attribute a2 ON a2.attnum = c.confkey[1] AND a2.attrelid = t2.oid
+JOIN pg_namespace t3 ON c.connamespace = t3.oid
+WHERE c.contype = 'f'
+  AND t1.relname = 'users'
+  AND t3.nspname = ANY (current_schemas(false))
+ORDER BY c.conname
+
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mUser Exists (0.9ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('admin@test.com') LIMIT 1[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "users" ("name", "email", "num", "major", "department", "password_digest", "admin", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"  [["name", "彭兆卿"], ["email", "admin@test.com"], ["num", "201628008629001"], ["major", "计算机软件与理论"], ["department", "计算机与控制学院"], ["password_digest", "$2a$10$LhDhvuUUvmWkTZ3p.6/bqOsRlj7xS/3Ix2E.OUlLMwQ1qgiYQ95N2"], ["admin", "t"], ["created_at", "2017-01-04 17:10:03.783567"], ["updated_at", "2017-01-04 17:10:03.783567"]]
+  [1m[36m (0.7ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mUser Exists (0.4ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher1@test.com') LIMIT 1[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "users" ("name", "email", "department", "password_digest", "teacher", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["name", "胡伟武"], ["email", "teacher1@test.com"], ["department", "计算技术研究所"], ["password_digest", "$2a$10$YwrlwxonvWpy.Q97zhTeROaN6Xd7odn5/uucjScz0R4NbDTVOrxZm"], ["teacher", "t"], ["created_at", "2017-01-04 17:10:03.870864"], ["updated_at", "2017-01-04 17:10:03.870864"]]
+  [1m[36m (1.0ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "courses" ("course_code", "name", "course_department", "course_firstlevel", "teaching_object", "course_type", "credit", "period", "limit_num", "start_week", "end_week", "course_time", "campus", "building", "class_room", "teaching_type", "exam_type", "teacher_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING "id"[0m  [["course_code", "091M4001H"], ["name", "计算机体系结构"], ["course_department", "计算机与控制学院"], ["course_firstlevel", "计算机科学与技术"], ["teaching_object", "硕士生"], ["course_type", "一级学科核心课"], ["credit", 3.0], ["period", 60], ["limit_num", 0], ["start_week", 2], ["end_week", 20], ["course_time", "10911"], ["campus", "雁栖湖"], ["building", "教1"], ["class_room", "107"], ["teaching_type", "课堂讲授为主"], ["exam_type", "闭卷笔试"], ["teacher_id", 2], ["created_at", "2017-01-04 17:10:03.929658"], ["updated_at", "2017-01-04 17:10:03.929658"]]
+  [1m[35m (0.6ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (1.9ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher2@test.com') LIMIT 1
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "users" ("name", "email", "department", "password_digest", "teacher", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["name", "刘玉贵"], ["email", "teacher2@test.com"], ["department", "计算机与控制学院"], ["password_digest", "$2a$10$xe1qJ7TvQDZWm2DGWdTzKu7hcpenwD8/EvMO2AjKopG38nWD5G9n."], ["teacher", "t"], ["created_at", "2017-01-04 17:10:04.019205"], ["updated_at", "2017-01-04 17:10:04.019205"]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO "courses" ("course_code", "name", "course_department", "course_firstlevel", "teaching_object", "course_type", "credit", "period", "limit_num", "start_week", "end_week", "course_time", "campus", "building", "class_room", "teaching_type", "exam_type", "teacher_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING "id"  [["course_code", "093M1002H-2"], ["name", "计算机算法设计与分析"], ["course_department", "计算机与控制学院"], ["course_firstlevel", "计算机科学与技术"], ["teaching_object", "硕士生"], ["course_type", "一级学科核心课"], ["credit", 3.0], ["period", 60], ["limit_num", 0], ["start_week", 2], ["end_week", 17], ["course_time", "10102 30102"], ["campus", "雁栖湖"], ["building", "教1"], ["class_room", "108"], ["teaching_type", "课堂讲授为主"], ["exam_type", "闭卷笔试"], ["teacher_id", 3], ["created_at", "2017-01-04 17:10:04.024070"], ["updated_at", "2017-01-04 17:10:04.024070"]]
+  [1m[36m (0.6ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (0.5ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher3@test.com') LIMIT 1[0m
+  [1m[35mSQL (0.9ms)[0m  INSERT INTO "users" ("name", "email", "department", "password_digest", "teacher", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["name", "李玲"], ["email", "teacher3@test.com"], ["department", "文献情报中心"], ["password_digest", "$2a$10$imaEjyuEW6zVRvGCvuGwD.7GkARrGfpsXrzzvIExNMuVkupwUAOb."], ["teacher", "t"], ["created_at", "2017-01-04 17:10:04.110918"], ["updated_at", "2017-01-04 17:10:04.110918"]]
+  [1m[36m (1.0ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "courses" ("course_code", "name", "course_department", "course_firstlevel", "teaching_object", "course_type", "credit", "period", "limit_num", "start_week", "end_week", "course_time", "campus", "building", "class_room", "teaching_type", "exam_type", "teacher_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING "id"[0m  [["course_code", "09MGB001H"], ["name", "计算机领域信息检索与利用实用技巧"], ["course_department", "计算机与控制学院"], ["course_firstlevel", "计算机科学与技术"], ["teaching_object", "硕士生"], ["course_type", "一级学科核心课"], ["credit", 1.0], ["period", 27], ["limit_num", 0], ["start_week", 2], ["end_week", 13], ["course_time", "20507"], ["campus", "雁栖湖"], ["building", "图书馆"], ["class_room", "145"], ["teaching_type", "课堂讲授为主"], ["exam_type", "大开卷"], ["teacher_id", 4], ["created_at", "2017-01-04 17:10:04.117329"], ["updated_at", "2017-01-04 17:10:04.117329"]]
+  [1m[35m (0.9ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.7ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('teacher4@test.com') LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("name", "email", "department", "password_digest", "teacher", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["name", "韩健平"], ["email", "teacher4@test.com"], ["department", "人文学院"], ["password_digest", "$2a$10$pLVi7kLVYz9tZ4H.mG47sOnZgQNvBsrUPmfyUIiJ68XZckrZ/HLqW"], ["teacher", "t"], ["created_at", "2017-01-04 17:10:04.202432"], ["updated_at", "2017-01-04 17:10:04.202432"]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "courses" ("course_code", "name", "course_department", "course_firstlevel", "teaching_object", "course_type", "credit", "period", "limit_num", "start_week", "end_week", "course_time", "campus", "building", "class_room", "teaching_type", "exam_type", "teacher_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING "id"  [["course_code", "14MGX063H"], ["name", "中国古代史讲座"], ["course_department", "计算机与控制学院"], ["course_firstlevel", "计算机科学与技术"], ["teaching_object", "硕士生"], ["course_type", "公共选修课"], ["credit", 1.0], ["period", 40], ["limit_num", 40], ["start_week", 3], ["end_week", 15], ["course_time", "40507"], ["campus", "雁栖湖"], ["building", "学园1"], ["class_room", "108"], ["teaching_type", "课堂讲授为主"], ["exam_type", "期末读书报告"], ["teacher_id", 5], ["created_at", "2017-01-04 17:10:04.207909"], ["updated_at", "2017-01-04 17:10:04.207909"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (0.4ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('student1@test.com') LIMIT 1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "users" ("name", "email", "num", "major", "department", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"  [["name", "璩雯佳"], ["email", "student1@test.com"], ["num", "201614150626082"], ["major", "信息安全"], ["department", "计算机技术研究所"], ["password_digest", "$2a$10$ZWd8Q3DkS0/UclSjyz7LiuJCMevdGuFo9NrHRSWBlc1bqRsFkX/J2"], ["created_at", "2017-01-04 17:10:04.290231"], ["updated_at", "2017-01-04 17:10:04.290231"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (0.8ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('student2@test.com') LIMIT 1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "users" ("name", "email", "num", "major", "department", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"  [["name", "茆郁俐"], ["email", "student2@test.com"], ["num", "201611778537747"], ["major", "模式识别与智能系统"], ["department", "计算机技术研究所"], ["password_digest", "$2a$10$C9LjTQcec8HulTHqC2VnBuj.M32WsHhu0J7LEvuB9xVtF9QkR5qTC"], ["created_at", "2017-01-04 17:10:04.386484"], ["updated_at", "2017-01-04 17:10:04.386484"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mUser Exists (0.4ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('student3@test.com') LIMIT 1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "users" ("name", "email", "num", "major", "department", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"  [["name", "邵致孜"], ["email", "student3@test.com"], ["num", "201659055754848"], ["major", "通信与信息系统"], ["department", "信息工程研究所"], ["password_digest", "$2a$10$REnjX/6L9uELdyGOPt1vwOC6EtTRY3HTmdJ3GTN2l5moagNsYH1Gi"], ["created_at", "2017-01-04 17:10:04.470789"], ["updated_at", "2017-01-04 17:10:04.470789"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('student4@test.com') LIMIT 1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "users" ("name", "email", "num", "major", "department", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"  [["name", "廉荣月"], ["email", "student4@test.com"], ["num", "201687951893569"], ["major", "计算机软件与理论"], ["department", "计算机与控制学院"], ["password_digest", "$2a$10$6gt.4iu5SCVHATs2eOWnkug7i9vbfLy0WVaLqHAWGvpKdjY8LiWe2"], ["created_at", "2017-01-04 17:10:04.555973"], ["updated_at", "2017-01-04 17:10:04.555973"]]
+  [1m[36m (0.8ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('student5@test.com') LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("name", "email", "num", "major", "department", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"  [["name", "伯舜欣"], ["email", "student5@test.com"], ["num", "201671627339676"], ["major", "模式识别与智能系统"], ["department", "软件研究所"], ["password_digest", "$2a$10$yxRF5h9NnnyuQvBOM8jyXeYQkFaNjJQjzwkOAUoYqG1o3qRkdKVZy"], ["created_at", "2017-01-04 17:10:04.638639"], ["updated_at", "2017-01-04 17:10:04.638639"]]
+  [1m[36m (0.6ms)[0m  [1mCOMMIT[0m
