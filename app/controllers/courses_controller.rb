@@ -63,37 +63,22 @@ class CoursesController < ApplicationController
   "for"=>{"硕士生"=>"M",  "博士生"=>"D"}
 }
 
-@@option=[
-      '01-1 数学', '01-2 系统科学','01-3 统计学',
-      '02-1 物理学', '02-2 核科学与技术',
-      '03-1 天文学',
-      '04-1 化学', '04-2 化学工程与技术',
-      '05-1 材料科学与工程', '05-2 光学工程','05-3 机械工程',
-      '06-1 生物学',
-      '07-1 地球物理学', '07-2 地质学','07-3 大气科学','07-4 海洋科学','07-5 地质资源与地质工程','07-6 测绘科学与技术',
-      '08-1 地理学', '08-2 生态学','08-3 环境科学与工程','08-4 农业资源利用',
-      '09-1 计算机科学与技术', '09-2 控制科学与工程','09-3 软件工程',
-      '10-1 信息与通信工程', '10-2 电子科学与技术','10-3 电气工程',
-      '11-1 力学', '11-2 动力工程及工程热物理','11-3 土木工程',
-      '12-1 管理科学与工程', '12-2 工商管理','12-3 应用经济学','12-4 图书情报与档案管理',
-      '13-1 管理科学与工程', '13-2 公共管理','13-3 法学',
-      '14-1 哲学', '14-2 心理学','14-3 新闻传播学','14-4 新闻传播学',
-      '18-1 基础医学', '18-2 药学','18-3 生物医学工程',
-      '19-1 电子与通信工程', '19-2 集成电路工程',
-      '20-1 网络空间安全']
+
   #-------------------------for teachers----------------------
 
   def new
     @course=Course.new
     @course1=Course.new
-    @option=@@option
+
+
   end
 
   def create
-
     @course = Course.new(course_params)
     get_course_code
     if @course.save
+      course_code = get_course_code
+      @course.update_attributes({"course_code"=>course_code})
       current_user.teaching_courses<<@course
       redirect_to courses_path, flash: {success: "新课程申请成功"}
     else
@@ -103,15 +88,16 @@ class CoursesController < ApplicationController
   end
 
   def edit
-    @option=@@option
+
     @course=Course.find_by_id(params[:id])
   end
 
   def update
     @course = Course.find_by_id(params[:id])
     get_course_code
-    
     if @course.update_attributes(course_params)
+      course_code = get_course_code
+      @course.update_attributes({"course_code"=>course_code})
       flash={:info => "更新成功"}
       redirect_to courses_path, flash: flash
     else
@@ -249,35 +235,45 @@ class CoursesController < ApplicationController
     temp = params.require(:course).permit(:course_code, :name, :course_department, :course_firstlevel, :teaching_object, :course_type, 
                                    :teaching_type, :exam_type,:period, :credit, :limit_num, :campus, :building, :class_room, 
                                    :course_time, :start_week, :end_week)
-    temp["course_department"] = temp["course_department"][3..-1]
-    temp["course_firstlevel"] = temp["course_firstlevel"][5..-1]
-    temp["teaching_object"] = temp["teaching_object"][2..-1]
-    temp["course_type"] = temp["course_type"][3..-1]
-    if temp["campus"][0,1] == "G"
-      temp["campus"] = temp["campus"][3..-1]
-    else 
-      temp["campus"] = temp["campus"][2..-1]
-    end
-    
+    temp["course_department"] = temp["course_department"].split(" ")[1]
+    temp["course_firstlevel"] = temp["course_firstlevel"].split(" ")[1]
+    temp["teaching_object"] = temp["teaching_object"].split(" ")[1]
+    temp["course_type"] = temp["course_type"].split(" ")[1]
+    temp["campus"] = temp["campus"].split(" ")[1]
+
     temp
   end
 
 
   def get_course_code
-     
+
     # @course.course_code= @course.course_department[0,2] + @course.course_firstlevel[3,1]+@course.teaching_object[0,1]+@course.course_type[0,1]+"#{params[:id].to_i+100}"+@course.campus[0,1]
     depart_num =  @@hash["department"][@course.course_department]
-    sort_num ="#{params[:id].to_i+100}"
-    campus_num = @@hash["campus"][@course.campus]
+    if @course.id == nil
+      sort_num ="000"
+    elsif @course.id<10
+      sort_num ="00#{@course.id.to_i}"
+    elsif @course.id < 100
+      sort_num ="0#{@course.id.to_i}"
+    else
+      sort_num ="#{@course.id.to_i}"
+    end
+      campus_num = @@hash["campus"][@course.campus]
     
     if (@course.teaching_object == "硕士生" or @course.teaching_object == "博士生") and @course.course_type =="公共必修课"
-      if (@course.teaching_object == "硕士生")
+      print("公共必修课")
+
+      if @course.teaching_object == "硕士生"
+        print("硕士生")
         first_lev_num = "MGB"
       else
+        print("博士生")
         first_lev_num = "DGB"
       end
       type_num= ""
       property_num=""
+
+
     elsif  @course.course_type =="公共选修课"
       first_lev_num = "MGX"
       type_num= ""

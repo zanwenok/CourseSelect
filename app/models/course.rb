@@ -15,7 +15,8 @@ class Course < ActiveRecord::Base
   validates :start_week,  numericality:{greater_than_or_equal_to: 1, less_than_or_equal_to: 20}
   validates :end_week, numericality:{greater_than_or_equal_to: :start_week, less_than_or_equal_to: 20}
   validates :class_room, format: {with: /\d{3}/ }, length: {maximum: 3}
- 
+
+  end
 
 #the Course Time and Operation
 class CourseTime 

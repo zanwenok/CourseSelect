@@ -37,7 +37,7 @@ class UsersController < ApplicationController
   end
 
   def edit_password
-
+    @user = User.find_by_id(params[:id])
   end
 
   def update_password
