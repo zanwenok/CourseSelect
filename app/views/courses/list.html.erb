@@ -8,10 +8,16 @@
         <div class="panel-heading">
           <h3 class="panel-title">选修课程</h3>
         </div>
+
+        <div class="panel-body" style="min-height: 450px">
+          <table class="table table-striped table-hover">
+            <thead>
+
         
         <%= render "courses/filter_form" %>
         <% @@Listed_Courses = @course %>
         <%= render "courses/list_courses" %>
+
       </div>
     </div>
   </div>
