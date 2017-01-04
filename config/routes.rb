@@ -42,7 +42,12 @@ Rails.application.routes.draw do
   end
 
   resources :grades, only: [:index, :update]
-  resources :users
+  resources :users do
+    member do
+      get :edit_password
+      patch :update_password
+    end
+  end
 
   get 'sessions/login' => 'sessions#new'
   post 'sessions/login' => 'sessions#create'

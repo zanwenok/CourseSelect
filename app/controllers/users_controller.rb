@@ -21,15 +21,44 @@ class UsersController < ApplicationController
   end
 
   def update
-    byebug
     @user = User.find_by_id(params[:id])
-    if @user.update_attributes(user_params)
-      flash={:info => "更新成功"}
+
+    if @user.authenticate(user_pwd_params[:password])
+      if @user.update_attributes(user_info_params)
+        flash={:info => "更新成功"}
+      else
+        flash={:warning => "更新失败"}
+      end
     else
-      flash={:warning => "更新失败"}
+      flash={:warning => "更新失败：密码错误"}
+    end
+    redirect_to root_path, flash: flash
+
+  end
+
+  def edit_password
+
+  end
+
+  def update_password
+    @user = User.find_by_id(params[:id])
+    if @user.authenticate(params.require(:user).permit(:old_password)[:old_password])
+      if user_pwd_params[:password] != user_pwd_params[:password_confirmation]
+        flash={:warning => "修改失败：两次密码输入不一致"}
+      elsif user_pwd_params[:password] == ""
+        flash={:warning => "修改失败：密码不能为空"}
+      elsif @user.update_attributes(user_pwd_params)
+        flash={:info => "修改成功"}
+      else
+        flash={:warning => "修改失败"}
+      end
+    else
+      flash={:warning => "修改失败：旧密码错误"}
     end
     redirect_to root_path, flash: flash
   end
+
+
 
   def destroy
     @user = User.find_by_id(params[:id])
@@ -44,11 +73,18 @@ class UsersController < ApplicationController
 
   private
 
-  def user_params
-    params.require(:user).permit(:email, :password,
-                                 :password_confirmation)
+  def user_info_params
+    if admin_logged_in?
+      params.require(:user).permit(:name,:department,:email)
+    else
+      params.require(:user).permit(:email)
+    end
   end
 
+  def user_pwd_params
+    params.require(:user).permit(:password,
+                                 :password_confirmation)
+  end
   # Confirms a logged-in user.
   def logged_in
     unless logged_in?

@@ -3,7 +3,7 @@
     <div class="panel panel-info">
       <div class="panel-heading">
         <h4 style="display: inline">编辑个人信息</h4>
-        <span class="glyphicon glyphicon-cog" style="float: right">修改密码</span>
+        <%=link_to '修改密码', edit_password_user_url, :class=>"glyphicon glyphicon-cog",:style=>"float:right"%>
       </div>
       <div class="panel-body">
 
@@ -17,7 +17,11 @@
                     <span style="float: right; margin-left: 5px">用户名</span>
                   </div>
                 </div>
-                <%= f.text_field :name, disabled: 'disabled',class: 'form-control' %>
+                <% if admin_logged_in? %>
+                    <%= f.text_field :name, class: 'form-control' %>
+                <% else %>
+                    <%= f.text_field :name, disabled: 'disabled',class: 'form-control' %>
+                <% end %>
               </div>
             </div>
 
@@ -70,7 +74,11 @@
                     <span style="float: right; margin-left: 5px">研究所</span>
                   </div>
                 </div>
+                <% if admin_logged_in? %>
+                <%= f.text_field :department, class: 'form-control' %>
+                <% else %>
                 <%= f.text_field :department, disabled: 'disabled',class: 'form-control' %>
+                <% end %>
               </div>
             </div>
 
@@ -83,19 +91,7 @@
                     <span style="float: right; margin-left: 5px">密码</span>
                   </div>
                 </div>
-                <%= f.password_field :password, class: 'form-control', placeholder: "输入新密码" %>
-              </div>
-            </div>
-
-            <div>
-              <div class="input-group">
-                <div class="input-group-addon">
-                  <div style="width: 75px">
-                    <span class="glyphicon glyphicon-lock" style="float:left" />
-                    <span style="float: right; margin-left: 5px">确认密码</span>
-                  </div>
-                </div>
-                <%= f.password_field :password_confirmation, class: 'form-control', placeholder: "再次输入密码" %>
+                <%= f.password_field :password, class: 'form-control', placeholder: "输入密码" %>
               </div>
             </div>
 
