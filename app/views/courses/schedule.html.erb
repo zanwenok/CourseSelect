@@ -11,7 +11,6 @@
         </div>
         <div class="panel-body" style="min-height: 450px">
           <table class="table table-striped table-hover" border="2">  <!--增加外边框 -->
-
             <thead>
             <tr>
               <th style="width:9%"></th>      <!--分别调整8列宽度所占比例 -->
@@ -75,7 +74,8 @@
                 <% if courselist[b][a]!=nil %>   <!--当该时间是某节课的第一节时 -->
                   <% time_str1 = "第#{courselist[b][a].start_week}~#{courselist[b][a].end_week}周" %>
                   <% time_str2 = Hashes.time_to_str(courselist[b][a].course_time) %>
-                  <% case empty_or_length[b][a] %>   <!--跨行显示，因为已判断该时间是某节课的第一节时间，所以对应empty_or_length数组中存放的是该次课的持续节数，据此选择跨几行显示信息 -->
+                  <!--跨行显示，因为已判断该时间是某节课的第一节时间，所以对应empty_or_length数组中存放的是该次课的持续节数，据此选择跨几行显示信息 -->
+                  <% case empty_or_length[b][a] %>   
                     <% when 1 %>   
                     <td rowspan="1"><%=courselist[b][a].name %><br><%= time_str1 %><br><%= courselist[b][a].building+"  "+courselist[b][a].class_room %></td>
                     <% when 2 %>
