@@ -67,40 +67,68 @@ class CoursesController < ApplicationController
     @course=@course.where(open:true).all
     @course=@course-current_user.courses
   end
-
-  def select
-    @course=Course.find_by_id(params[:id])
-    course_time=CourseTime.new @course
-    @@conflict_list=course_time.DectConflictByList(current_user.courses)
-    if @@conflict_list.empty?
-      current_user.courses<<@course
-      flash={:success => "成功选择课程: #{@course.name}"}
-      redirect_to courses_path, flash: flash
-    else
-      flash={:warning => "#{@course.name}  与下列课程冲突"}
-      @@change_course=@course
-      redirect_to conflict_course_path,flash: flash
-    end        
+  
+  def quitwithcheck course
+    course.update_attribute(:student_num,course.student_num-1)
+    current_user.courses.delete(course)
+    return true
   end
   
+  def selectwithcheck course
+    course_time=CourseTime.new course
+    course_limt=CourseLimit.new course
+    @@conflict_list=course_time.DectConflictByList(current_user.courses)
+    
+    if @@conflict_list.empty? and course_limt.isLimited?
+      current_user.courses<< course
+      course.update_attribute(:student_num,course.student_num+1)
+      flash={:success => "成功选择课程: #{course.name}"}
+      redirect_to courses_path, flash: flash
+      return true
+    end
+    unless course_limt.isLimited?
+      flash={:warning => "人数已满：#{course.name} "}
+      redirect_to courses_path, flash: flash
+      return false
+    end
+    unless @@conflict_list.empty?
+      flash={:warning => "选课冲突：#{course.name}  与下列课程冲突"}
+      @@change_course=course
+      redirect_to conflict_course_path,flash: flash
+      return false
+    end
+    flash={:warning => "未知错误"}
+    redirect_to courses_path, flash: flash
+    return false
+  end
+    
+    
+  def select
+    @course=Course.find_by_id(params[:id])
+    selectwithcheck(@course)
+  end
+
   def conflict
     @course=@@conflict_list
   end
   
   def change
-    current_user.courses<<@@change_course
     @@conflict_list.each do |course|
-      current_user.courses.delete(course)
+      unless quitwithcheck(course)
+        flash={:warning => "未知错误"}
+        redirect_to courses_path, flash: flash
+        return
+      end
     end
-    flash={:success => "成功选择课程: #{@@change_course.name}"}
-    redirect_to courses_path, flash: flash
+    selectwithcheck(@@change_course)
   end
   
   def quit
     @course=Course.find_by(id:params[:id])
-    current_user.courses.delete(@course)
-    flash={:success => "成功退选课程: #{@course.name}"}
-    redirect_to courses_path, flash: flash
+    if quitwithcheck(@course)
+      flash={:success => "成功退选课程: #{@course.name}"}
+      redirect_to courses_path, flash: flash
+    end
   end
 
 
