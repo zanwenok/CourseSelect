@@ -45,12 +45,10 @@ class UsersController < ApplicationController
     if @user.authenticate(params.require(:user).permit(:old_password)[:old_password])
       if user_pwd_params[:password] != user_pwd_params[:password_confirmation]
         flash={:warning => "修改失败：两次密码输入不一致"}
-      elsif user_pwd_params[:password] == ""
-        flash={:warning => "修改失败：密码不能为空"}
       elsif @user.update_attributes(user_pwd_params)
         flash={:info => "修改成功"}
       else
-        flash={:warning => "修改失败"}
+        flash={:warning => "修改失败:密码最少为6个字符"}
       end
     else
       flash={:warning => "修改失败：旧密码错误"}
