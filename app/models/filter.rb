@@ -182,24 +182,26 @@ class Filter
     private
     #仅列出不冲突课程
     def self.filter_clash
-        temp = []
-        exist_time = []
-        $SelectedCourses.each do |x|
-            exist_time << x.course_time
-        end
-        @@FilteredCourses.each do |x|
-            clash_flag = false
-            exist_time.each do |y|
-                if self.clash_tests(x.course_time, y)
-                    clash_flag = true
-                    break
+        unless $SelectedCourses.nil?
+            temp = []
+            exist_time = []
+            $SelectedCourses.each do |x|
+                exist_time << x.course_time
+            end
+            @@FilteredCourses.each do |x|
+                clash_flag = false
+                exist_time.each do |y|
+                    if self.clash_tests(x.course_time, y)
+                        clash_flag = true
+                        break
+                    end
+                end
+                unless clash_flag
+                    temp << x
                 end
             end
-            unless clash_flag
-                temp << x
-            end
+            @@FilteredCourses = temp
         end
-        @@FilteredCourses = temp
     end
     
     private
@@ -238,11 +240,13 @@ class Filter
     
     public
     #筛选
-    def Filter.filter(filter_string)
-        @@FilteredCourses = Course.all
-        patterns = filter_string.split
-        patterns.each do |p|
-            self.pattern_run(p)
+    def Filter.filter(filter_string, course_all)
+        unless (filter_string.nil? || course_all.nil?)
+            @@FilteredCourses = course_all
+            patterns = filter_string.split
+            patterns.each do |p|
+                self.pattern_run(p)
+            end
         end
     end
     

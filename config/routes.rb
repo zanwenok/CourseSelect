@@ -25,15 +25,29 @@ Rails.application.routes.draw do
       get :quit
       get :open
       get :close
+
+      get :conflict
+      get :change
+
+      get :detail
+
     end
     collection do
       get :list
       get :filter
     end
+    collection do
+      get :schedule
+    end
   end
 
   resources :grades, only: [:index, :update]
-  resources :users
+  resources :users do
+    member do
+      get :edit_password
+      patch :update_password
+    end
+  end
 
   get 'sessions/login' => 'sessions#new'
   post 'sessions/login' => 'sessions#create'
@@ -80,3 +94,4 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
 end
+
