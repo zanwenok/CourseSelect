@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  get 'ajax/get_filter_string'
-
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -25,29 +23,20 @@ Rails.application.routes.draw do
       get :quit
       get :open
       get :close
-
+<<<<<<< HEAD
       get :conflict
       get :change
-
+=======
       get :detail
-
+>>>>>>> 0bf9ed440487805a1fa2817839880173d3640fec
     end
     collection do
       get :list
-      get :filter
-    end
-    collection do
-      get :schedule
     end
   end
 
   resources :grades, only: [:index, :update]
-  resources :users do
-    member do
-      get :edit_password
-      patch :update_password
-    end
-  end
+  resources :users
 
   get 'sessions/login' => 'sessions#new'
   post 'sessions/login' => 'sessions#create'
@@ -94,4 +83,3 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
 end
-

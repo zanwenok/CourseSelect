@@ -2,8 +2,7 @@
   <div class="col-sm-offset-4 col-sm-4">
     <div class="panel panel-info">
       <div class="panel-heading">
-        <h4 style="display: inline">编辑个人信息</h4>
-        <%=link_to '修改密码', edit_password_user_url, :class=>"glyphicon glyphicon-cog",:style=>"float:right"%>
+        <h4>编辑个人信息</h4>
       </div>
       <div class="panel-body">
 
@@ -11,87 +10,45 @@
             <%= render 'shared/error_messages', :object => current_user %>
             <div class="form-group">
               <div class="input-group">
-                <div class="input-group-addon">
-                  <div style="width: 75px">
-                    <span class="glyphicon glyphicon-user" style="float:left" />
-                    <span style="float: right; margin-left: 5px">用户名</span>
-                  </div>
-                </div>
-                <% if admin_logged_in? %>
-                    <%= f.text_field :name, class: 'form-control' %>
-                <% else %>
-                    <%= f.text_field :name, disabled: 'disabled',class: 'form-control' %>
-                <% end %>
+                <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+                <%= f.text_field :name, class: 'form-control' %>
               </div>
             </div>
-
-            <% if student_logged_in? %>
-            <div class="form-group">
-              <div class="input-group">
-                <div class="input-group-addon">
-                  <div style="width: 75px">
-                    <span class="glyphicon glyphicon-user" style="float:left" />
-                    <span style="float: right; margin-left: 5px">学号</span>
-                  </div>
-                </div>
-                <%= f.text_field :num, disabled: 'disabled',class: 'form-control' %>
-              </div>
-            </div>
-            <% end %>
 
             <div class="form-group">
 
               <div class="input-group">
-                <div class="input-group-addon">
-                  <div style="width: 75px">
-                    <span class="glyphicon glyphicon-envelope" style="float:left" />
-                    <span style="float: right; margin-left: 5px">E-mail</span>
-                  </div>
-                </div>
+                <div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
                 <%= f.text_field :email, class: 'form-control' %>
               </div>
             </div>
 
-            <% if student_logged_in? %>
             <div class="form-group">
               <div class="input-group">
-                <div class="input-group-addon">
-                  <div style="width: 75px">
-                    <span class="glyphicon glyphicon-book" style="float:left" />
-                    <span style="float: right; margin-left: 5px">专业</span>
-                  </div>
-                </div>
-                <%= f.text_field :major, disabled: 'disabled',class: 'form-control' %>
+                <div class="input-group-addon"><span class="glyphicon glyphicon-home"></span></div>
+                <%= f.text_field :major, class: 'form-control' %>
               </div>
             </div>
-            <% end %>
 
             <div class="form-group">
               <div class="input-group">
-                <div class="input-group-addon">
-                  <div style="width: 75px">
-                    <span class="glyphicon glyphicon-briefcase" style="float:left" />
-                    <span style="float: right; margin-left: 5px">研究所</span>
-                  </div>
-                </div>
-                <% if admin_logged_in? %>
+                <div class="input-group-addon"><span class="glyphicon glyphicon-check"></span></div>
                 <%= f.text_field :department, class: 'form-control' %>
-                <% else %>
-                <%= f.text_field :department, disabled: 'disabled',class: 'form-control' %>
-                <% end %>
               </div>
             </div>
 
 
             <div class="form-group">
               <div class="input-group">
-                <div class="input-group-addon">
-                  <div style="width: 75px">
-                    <span class="glyphicon glyphicon-lock" style="float:left" />
-                    <span style="float: right; margin-left: 5px">密码</span>
-                  </div>
-                </div>
-                <%= f.password_field :password, class: 'form-control', placeholder: "输入密码" %>
+                <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                <%= f.password_field :password, class: 'form-control', placeholder: "输入新密码" %>
+              </div>
+            </div>
+
+            <div>
+              <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                <%= f.password_field :password_confirmation, class: 'form-control', placeholder: "再次输入密码" %>
               </div>
             </div>
 

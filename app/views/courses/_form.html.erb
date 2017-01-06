@@ -20,23 +20,24 @@
     <div class="form-group">
       <%= f.label "一级学科", class: 'col-sm-4 control-label' %>
       <div class="col-sm-6">
-       <%= f.select :course_firstlevel, options_for_select([    '01-1 数学', '01-2 系统科学','01-3 统计学',
-                                                               '02-1 物理学', '02-2 核科学与技术',
-                                                               '03-1 天文学',
-                                                               '04-1 化学', '04-2 化学工程与技术',
-                                                               '05-1 材料科学与工程', '05-2 光学工程','05-3 机械工程',
-                                                               '06-1 生物学',
-                                                               '07-1 地球物理学', '07-2 地质学','07-3 大气科学','07-4 海洋科学','07-5 地质资源与地质工程','07-6 测绘科学与技术',
-                                                               '08-1 地理学', '08-2 生态学','08-3 环境科学与工程','08-4 农业资源利用',
-                                                               '09-1 计算机科学与技术', '09-2 控制科学与工程','09-3 软件工程',
-                                                               '10-1 信息与通信工程', '10-2 电子科学与技术','10-3 电气工程',
-                                                               '11-1 力学', '11-2 动力工程及工程热物理','11-3 土木工程',
-                                                               '12-1 管理科学与工程', '12-2 工商管理','12-3 应用经济学','12-4 图书情报与档案管理',
-                                                               '13-1 管理科学与工程', '13-2 公共管理','13-3 法学',
-                                                               '14-1 哲学', '14-2 心理学','14-3 新闻传播学','14-4 新闻传播学',
-                                                               '18-1 基础医学', '18-2 药学','18-3 生物医学工程',
-                                                               '19-1 电子与通信工程', '19-2 集成电路工程',
-                                                               '20-1 网络空间安全']), {}, class: 'form-control', placeholder: "选择授课对象" %>
+       <%= f.select :course_firstlevel, options_for_select([
+       '01-1 数学', '01-2 系统科学','01-3 统计学',
+       '02-1 物理学', '02-2 核科学与技术',
+       '03-1 天文学',
+       '04-1 化学', '04-2 化学工程与技术',
+       '05-1 材料科学与工程', '05-2 光学工程','05-3 机械工程',
+       '06-1 生物学',
+       '07-1 地球物理学', '07-2 地质学','07-3 大气科学','07-4 海洋科学','07-5 地质资源与地质工程','07-6 测绘科学与技术',
+       '08-1 地理学', '08-2 生态学','08-3 环境科学与工程','08-4 农业资源利用',
+       '09-1 计算机科学与技术', '09-2 控制科学与工程','09-3 软件工程',
+       '10-1 信息与通信工程', '10-2 电子科学与技术','10-3 电气工程',
+       '11-1 力学', '11-2 动力工程及工程热物理','11-3 土木工程',
+       '12-1 管理科学与工程', '12-2 工商管理','12-3 应用经济学','12-4 图书情报与档案管理',
+       '13-1 管理科学与工程', '13-2 公共管理','13-3 法学',
+       '14-1 哲学', '14-2 心理学','14-3 新闻传播学','14-4 新闻传播学',
+       '18-1 基础医学', '18-2 药学','18-3 生物医学工程',
+       '19-1 电子与通信工程', '19-2 集成电路工程',
+       '20-1 网络空间安全']), {}, class: 'form-control', placeholder: "选择授课对象" %>  
       </div>
     </div>
     
@@ -50,7 +51,7 @@
     <div class="form-group">
       <%= f.label "课程属性", class: 'col-sm-4 control-label' %>
       <div class="col-sm-6">
-       <%= f.select :course_type, options_for_select(['1 一级学科核心课', '2 一级学科普及课','3 一级学科研讨课','4 专业核心课','5 专业普及课','6 专业研讨课','7 高级强化课','GB 公共必修课','GX 公共选修课']), {}, class: 'form-control', placeholder: "选择课程属性" %>  
+       <%= f.select :course_type, options_for_select(['1 一级学科核心课', '2 一级学科普及课','3 一级学科研讨课','4 专业核心课','5 专业普及课','6 专业研讨课','7 高级强化课']), {}, class: 'form-control', placeholder: "选择课程属性" %>  
       </div>
     </div>
 
@@ -104,21 +105,21 @@
     </div>
 
     <div class="form-group">
-      <%= f.label "教室(3位数字)", class: 'col-sm-4 control-label' %>
+      <%= f.label "教室", class: 'col-sm-4 control-label' %>
       <div class="col-sm-6">
           <%= f.text_field :class_room, class: 'form-control', placeholder: "输入教室" %>
       </div>
     </div>
 
     <div class="form-group">
-      <%= f.label "开始周(1~20)", class: 'col-sm-4 control-label' %>
+      <%= f.label "开始周", class: 'col-sm-4 control-label' %>
       <div class="col-sm-6">
           <%= f.text_field :start_week, class: 'form-control', placeholder: "输入开始周" %>
       </div>
     </div>
 
     <div class="form-group">
-      <%= f.label "结束周(1~20)", class: 'col-sm-4 control-label' %>
+      <%= f.label "结束周", class: 'col-sm-4 control-label' %>
       <div class="col-sm-6">
           <%= f.text_field :end_week, class: 'form-control', placeholder: "输入结束周" %>
       </div>
