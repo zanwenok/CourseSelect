@@ -1,6 +1,6 @@
 class CoursesController < ApplicationController
 
-  before_action :student_logged_in, only: [:select, :quit, :list, :schedule]
+  before_action :student_logged_in, only: [:select, :quit, :list, :schedule, :filter]
   before_action :teacher_logged_in, only: [:new, :create, :edit, :destroy, :update]
   before_action :logged_in, only: :index
   
@@ -145,14 +145,17 @@ class CoursesController < ApplicationController
   def filter
     #byebug
     $SelectedCourses = current_user.courses
-    Filter.filter(params[:exchange])            #获取筛选字符串并执行筛选操作
-    @course = Filter.filtered_courses           #返回筛选结果
-    @course.each do |x|
-      unless x.open?
-        @course = @course - [x]
+    str = params[:exchange]                     #获取筛选字符串
+    unless str.nil?
+      Filter.filter(str, Course.all)            #执行筛选操作
+      @course = Filter.filtered_courses         #返回筛选结果
+      @course.each do |x|
+        unless x.open?
+          @course = @course - [x]
+        end
       end
+      @course = @course - current_user.courses
     end
-    @course = @course - current_user.courses
   end
 
   def select
