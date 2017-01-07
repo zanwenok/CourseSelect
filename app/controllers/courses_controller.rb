@@ -1,6 +1,5 @@
 class CoursesController < ApplicationController
-
-  before_action :student_logged_in, only: [:select, :quit, :list]
+  before_action :student_logged_in, only: [:select, :quit, :list, :schedule, :filter]
   before_action :teacher_logged_in, only: [:new, :create, :edit, :destroy, :update]
   before_action :logged_in, only: :index
 
@@ -9,6 +8,7 @@ class CoursesController < ApplicationController
   def new
     @course=Course.new
     @course1=Course.new
+    @@change_course=Course.new
   end
 
   def create
@@ -68,39 +68,25 @@ class CoursesController < ApplicationController
     @course=@course-current_user.courses
   end
   
-  def quitwithcheck course
-    course.update_attribute(:student_num,course.student_num-1)
-    current_user.courses.delete(course)
-    return true
+
+  
+  def filter
+    #byebug
+    $SelectedCourses = current_user.courses
+    str = params[:exchange]                     #获取筛选字符串
+    unless str.nil?
+      Filter.filter(str, Course.all)            #执行筛选操作
+      @course = Filter.filtered_courses         #返回筛选结果
+      @course.each do |x|
+        unless x.open?
+          @course = @course - [x]
+        end
+      end
+      @course = @course - current_user.courses
+    end
   end
   
-  def selectwithcheck course
-    course_time=CourseTime.new course
-    course_limt=CourseLimit.new course
-    @@conflict_list=course_time.DectConflictByList(current_user.courses)
-    
-    if @@conflict_list.empty? and course_limt.isLimited?
-      current_user.courses<< course
-      course.update_attribute(:student_num,course.student_num+1)
-      flash={:success => "成功选择课程: #{course.name}"}
-      redirect_to courses_path, flash: flash
-      return true
-    end
-    unless course_limt.isLimited?
-      flash={:warning => "人数已满：#{course.name} "}
-      redirect_to courses_path, flash: flash
-      return false
-    end
-    unless @@conflict_list.empty?
-      flash={:warning => "选课冲突：#{course.name}  与下列课程冲突"}
-      @@change_course=course
-      redirect_to conflict_course_path,flash: flash
-      return false
-    end
-    flash={:warning => "未知错误"}
-    redirect_to courses_path, flash: flash
-    return false
-  end
+  
     
     
   def select
@@ -109,7 +95,12 @@ class CoursesController < ApplicationController
   end
 
   def conflict
+    @change_this_view=@@change_course
     @course=@@conflict_list
+    @course_name= String.new
+    @course.each do |course|
+      @course_name+=(course.name+"\n")
+    end
   end
   
   def change
@@ -144,7 +135,7 @@ class CoursesController < ApplicationController
   end
 
   private
-
+  
   # Confirms a student logged-in user.
   def student_logged_in
     unless student_logged_in?
@@ -175,4 +166,39 @@ class CoursesController < ApplicationController
   def get_course_code
     @course.course_code= @course.course_department[0,2] + @course.course_firstlevel[3,1]+@course.teaching_object[0,1]+@course.course_type[0,1]+"#{params[:id].to_i+100}"+@course.campus[0,1]
   end
+  
+  def selectwithcheck course
+    course_time=CourseTime.new course
+    course_limt=CourseLimit.new course
+    @@conflict_list=course_time.DectConflictByList(current_user.courses)
+    if @@conflict_list.empty? and course_limt.isLimited?
+      current_user.courses<< course
+      course.update_attribute(:student_num,course.student_num+1)
+      flash={:success => "成功选择课程: #{course.name}"}
+      redirect_to courses_path, flash: flash
+      return true
+    end
+    unless course_limt.isLimited?
+      flash={:warning => "人数已满：#{course.name} "}
+      redirect_to courses_path, flash: flash
+      return false
+    end
+    unless @@conflict_list.empty?
+      flash={:warning => "选课冲突：#{course.name}  与下列课程冲突"}
+      @@change_course=course
+      puts "this #{@@change_course.name}"
+      redirect_to conflict_course_path,flash: flash
+      return false
+    end
+    flash={:warning => "未知错误"}
+    redirect_to courses_path, flash: flash
+    return false
+  end
+  
+  def quitwithcheck course
+    course.update_attribute(:student_num,course.student_num-1)
+    current_user.courses.delete(course)
+    return true
+  end
+  
 end

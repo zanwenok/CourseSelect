@@ -22,8 +22,34 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find_by_id(params[:id])
-    if @user.update_attributes(user_params)
-      flash={:info => "更新成功"}
+
+    if @user.authenticate(user_pwd_params[:password])
+      if @user.update_attributes(user_info_params)
+        flash={:info => "更新成功"}
+      else
+        flash={:warning => "更新失败"}
+      end
+    else
+      flash={:warning => "更新失败：密码错误"}
+    end
+    redirect_to root_path, flash: flash
+
+  end
+
+  def edit_password
+    @user = User.find_by_id(params[:id])
+  end
+
+  def update_password
+    @user = User.find_by_id(params[:id])
+    if @user.authenticate(params.require(:user).permit(:old_password)[:old_password])
+      if user_pwd_params[:password] != user_pwd_params[:password_confirmation]
+        flash={:warning => "修改失败：两次密码输入不一致"}
+      elsif @user.update_attributes(user_pwd_params)
+        flash={:info => "修改成功"}
+      else
+        flash={:warning => "修改失败:密码最少为6个字符"}
+      end
     else
       flash={:warning => "更新失败"}
     end

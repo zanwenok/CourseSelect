@@ -1,3 +1,18 @@
+<style> 
+    body{text-align:center}.divcss5{margin:0 auto;width:200px;height:50px; solid #000} 
+</style>
+
+<head>
+  <script type="text/javascript" >
+    function CL()
+      {
+        var output = "你将选择课程："+$("#change_name").val()+"\n";
+        output=output+"同时你将退课："+$("#quit_name").val();
+        window.alert(output);
+      }
+  </script>
+</head>
+
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-2">
@@ -39,22 +54,24 @@
                   <td><%= limit_str %></td>
                   <td><%= Hashes.type(course.course_code) %></td>
                   <td><%= course.teacher.name %></td>
-                  <td><%= link_to "详细信息", nil, class: "btn-sm btn-info" %></td>
+                  <td><%= link_to "详细信息", detail_course_path(course), class: "btn-sm btn-info" %></td>
                 </tr>
             <% end %>
             </tbody>
           </table>
-            <br/>
-            <br/>
-            <style> 
-              body{text-align:center} 
-              .divcss5{margin:0 auto;width:200px;height:50px; solid #000} 
-              </style>
-              <body >
-                <div class="divcss5">
-                  <td><%= link_to "一键换课", change_course_path, class: "btn-lg btn-danger" %></td>
-                </div>
-              </body>
+          <br/>
+          <br/>
+          <div class="divcss5">
+                <td><%= link_to "一键换课", change_course_path, class: "btn-lg btn-danger" %></td>
+          </div>
+          
+          <div>
+          <input type="hidden" id="change_name" value="<%= @change_this_view.name %>"/>
+          <input type="hidden" id="quit_name" value="<%= @course_name%>"/>
+          <body>
+            <button type="button" onclick="CL()">一键换课说明</button>
+          </body>
+          </div>
         </div>
       </div>
     </div>
