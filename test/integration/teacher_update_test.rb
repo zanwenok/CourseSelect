@@ -1,5 +1,7 @@
 require 'test_helper'
 
+# author @zanwen
+
 class TeacherUpdateTest < ActionDispatch::IntegrationTest
   def setup
     @origin_name = "teacher"
@@ -73,7 +75,7 @@ class TeacherUpdateTest < ActionDispatch::IntegrationTest
     assert_equal @current_user.department, @origin_department
   end
 
-  test "student update password with right old_password" do
+  test "teacher update password with right old_password" do
     @new_password = "password_new"
     @new_passwrod_confirmarion = "password_new"
     @wrong_password_confirmation = "password_new_wrong"
@@ -89,7 +91,7 @@ class TeacherUpdateTest < ActionDispatch::IntegrationTest
     assert @current_user.authenticate(@new_password)
   end
 
-  test "student update password with wrong old_password" do
+  test "teacher update password with wrong old_password" do
     @new_password = "password_new"
     @new_passwrod_confirmarion = "password_new"
     @wrong_password_confirmation = "password_new_wrong"
@@ -105,7 +107,7 @@ class TeacherUpdateTest < ActionDispatch::IntegrationTest
     assert @current_user.authenticate(@origin_password)
   end
 
-  test "student update password with short new_password" do
+  test "teacher update password with short new_password" do
     @new_password = "short"
     @new_passwrod_confirmarion =  "short"
     @wrong_password_confirmation = "password_new_wrong"
@@ -121,7 +123,7 @@ class TeacherUpdateTest < ActionDispatch::IntegrationTest
     assert @current_user.authenticate(@origin_password)
   end
 
-  test "student update password with wrong confirmation" do
+  test "teacher update password with wrong confirmation" do
     @new_password = "short"
     @new_passwrod_confirmarion =  "short"
     @wrong_password_confirmation = "password_new_wrong"
